@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/esminc/narrative.png)](https://codeclimate.com/github/esminc/narrative)
+
 # Narrative
 
 TODO: Write a gem description
