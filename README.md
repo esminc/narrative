@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/esminc/narrative.svg?branch=master)](https://travis-ci.org/esminc/narrative)
 [![Code Climate](https://codeclimate.com/github/esminc/narrative.png)](https://codeclimate.com/github/esminc/narrative)
 
 # Narrative
