@@ -7,8 +7,8 @@ Gem::Specification.new do |spec|
   spec.version       = Narrative::VERSION
   spec.authors       = ['Takuya Watanabe', 'Hiroshi Kajisha']
   spec.email         = ['tkywtnb@gmail.com', 'kajisha@gmail.com']
-  spec.summary       = %q{atdkk.}
-  spec.description   = %q{.}
+  spec.summary       = %q{a simple implementation of DCI.}
+  spec.description   = %q{a simple implementation of DCI.}
   spec.homepage      = 'https://github.com/esminc/narrative'
   spec.license       = 'MIT'
 
