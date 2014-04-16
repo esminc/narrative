@@ -1,6 +1,6 @@
 module Narrative
   module Context
-    module Blender
+    module Teller
       def with_context(context_name, attributes, &block)
         context_for(context_name).bind! attributes, block
       end
