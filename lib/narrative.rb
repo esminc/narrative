@@ -1,5 +1,4 @@
-require 'narrative/version'
+require 'narrative/context'
 
 module Narrative
-  require 'narrative/context'
 end
