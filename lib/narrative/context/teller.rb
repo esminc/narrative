@@ -1,8 +1,8 @@
 module Narrative
   module Context
     module Teller
-      def with_context(context_name, attributes, &block)
-        context_for(context_name).bind! attributes, block
+      def with_context(context_name, data, &block)
+        context_for(context_name).bind! data, block
       end
 
       private
