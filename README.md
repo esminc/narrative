@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/esminc/narrative.svg?branch=master)](https://travis-ci.org/esminc/narrative)
 [![Code Climate](https://codeclimate.com/github/esminc/narrative.png)](https://codeclimate.com/github/esminc/narrative)
+[![PullReview stats](https://www.pullreview.com/github/esminc/narrative/badges/master.svg?)](https://www.pullreview.com/github/esminc/narrative/reviews/master)
 
 # Narrative
 
