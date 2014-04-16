@@ -5,9 +5,7 @@ module Narrative
     extend ActiveSupport::Concern
 
     included do
-      cattr_accessor :roles, instance_accessor: false
-
-      self.roles ||= {}
+      cattr_reader(:roles, instance_accessor: false) { {} }
     end
 
     module ClassMethods
