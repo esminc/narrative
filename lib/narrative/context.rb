@@ -21,7 +21,8 @@ module Narrative
 
       @actors = {}
 
-      bind_roles! data
+      cast! data
+      introduce!
     end
 
     def perform(&block)
@@ -35,15 +36,22 @@ module Narrative
       raise 'data did not allow to contain nil' if data.values.include?(nil)
     end
 
-    def bind_roles!(data)
+    def cast!(data)
       roles.each do |role_name, method_block|
-        @actors[role_name] = cast!(data[role_name], method_block)
+        data[role_name].instance_eval(&method_block)
+        @actors[role_name] = data[role_name]
       end
     end
 
-    def cast!(datum, method_block)
-      datum.instance_eval(&method_block)
-      datum
+    def introduce!
+      @actors.to_a.permutation(2).each do |(_, actor), (role_name, other)|
+        actor.instance_variable_set "@#{role_name}", other
+
+        actor.class.class_eval do
+          attr_reader role_name
+          private role_name
+        end
+      end
     end
   end
 end
