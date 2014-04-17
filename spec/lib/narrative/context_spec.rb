@@ -18,7 +18,7 @@ describe Narrative::Context do
     it { expect(ProjectContext.roles).not_to include(:product_owner) }
   end
 
-  describe '.bind' do
+  describe '.bind!' do
     class ProjectContext
       include Narrative::Context
 
