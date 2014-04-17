@@ -17,16 +17,20 @@ module Narrative
     end
 
     def initialize(data)
-      validate(data)
+      validate!(data)
 
       @actors = {}
 
       bind_roles! data
     end
 
+    def perform(&block)
+      block.call @actors.slice(*block.parameters.map(&:last))
+    end
+
     private
 
-    def validate(data)
+    def validate!(data)
       raise 'data and role definition did not same' if data.keys.to_set != roles.keys.to_set
       raise 'data did not allow to contain nil' if data.values.include?(nil)
     end

@@ -52,4 +52,32 @@ describe Narrative::Context do
       it { expect { ProjectContext.new(data) }.to raise_error }
     end
   end
+
+  describe '#perform' do
+    class ProjectContext
+      include Narrative::Context
+
+      role :programmer do
+        def coding; end
+      end
+
+      role :tester do
+        def report_bug; end
+      end
+    end
+
+    specify do
+      called = false
+      context = ProjectContext.new({programmer: 'alice', tester: 'bob'})
+
+      context.perform do |programmer:, tester:|
+        expect(programmer).to eq(context.programmer)
+        expect(tester).to eq(context.tester)
+
+        called = true
+      end
+
+      expect(called).to eq(true)
+    end
+  end
 end
