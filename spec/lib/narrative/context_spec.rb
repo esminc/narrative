@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pry'
 
 describe Narrative::Context do
   describe '.role' do
@@ -14,8 +15,10 @@ describe Narrative::Context do
       role :product_owner do; end
     end
 
-    it { expect(ProjectContext.roles).to include(:programmer) }
-    it { expect(ProjectContext.roles).not_to include(:product_owner) }
+    subject { ProjectContext.roles.map(&:name) }
+
+    it { is_expected.to include(:programmer) }
+    it { is_expected.not_to include(:product_owner) }
   end
 
   describe 'cast roles to data' do
