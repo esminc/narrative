@@ -63,7 +63,7 @@ describe Narrative::Context do
         end
       end
 
-      role :tester do
+      role :tester, partners: [:programmer] do
         def report_bug(code)
           programmer.correct!(code)
         end

@@ -1,4 +1,5 @@
 require 'active_support'
+require_relative 'role_definition'
 
 module Narrative
   module Context
@@ -9,9 +10,8 @@ module Narrative
     end
 
     module ClassMethods
-      def role(name, &block)
-        roles[name] = block
-
+      def role(name, partners: [], &block)
+        roles[name] = RoleDefinition.new(partners, &block)
         define_method(name.to_sym) { @actors[name] }
       end
     end
@@ -22,7 +22,6 @@ module Narrative
       @actors = {}
 
       cast! data
-      introduce!
     end
 
     def perform(&block)
@@ -37,20 +36,8 @@ module Narrative
     end
 
     def cast!(data)
-      roles.each do |role_name, method_block|
-        data[role_name].instance_eval(&method_block)
-        @actors[role_name] = data[role_name]
-      end
-    end
-
-    def introduce!
-      @actors.to_a.permutation(2).each do |(_, actor), (role_name, other)|
-        actor.instance_variable_set "@#{role_name}", other
-
-        actor.class.class_eval do
-          attr_reader role_name
-          private role_name
-        end
+      roles.each do |role_name, role_definition|
+        @actors[role_name] = role_definition.cast!(data[role_name], data.except(role_name))
       end
     end
   end
