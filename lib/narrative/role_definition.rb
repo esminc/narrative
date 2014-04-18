@@ -9,18 +9,28 @@ module Narrative
         @responsibilities = responsibilities
       end
 
-      def cast!(data)
-        actor = data[@name]
-        actor.instance_eval(&@responsibilities)
+      def cast!(actors)
+        actor = actor!(actors)
+        relationship!(actor, actors)
 
+        actor
+      end
+
+      private
+
+      def actor!(actors)
+        actor = actors[@name]
+        actor.instance_eval(&@responsibilities)
+        actor
+      end
+
+      def relationship!(actor, actors)
         klass = class << actor; self end
-        data.slice(*@partners).each do |role_name, partner|
+        actors.slice(*@partners).each do |role_name, partner|
           klass.instance_eval do
             define_method(role_name) { partner }
           end
         end
-
-        actor
       end
     end
   end
