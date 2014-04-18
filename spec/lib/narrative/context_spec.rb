@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'pry'
 
 describe Narrative::Context do
   describe '.role' do
