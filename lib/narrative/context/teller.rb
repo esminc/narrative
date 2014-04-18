@@ -4,14 +4,15 @@ module Narrative
   module Context
     module Teller
       def with_context(context_name, data, &block)
-        context_for(context_name).bind! data, &block
+        context_for(context_name, data).perform(&block)
       end
 
       private
 
-      def context_for(name)
+      def context_for(name, data)
         context_names = name.split << 'context'
-        context_names.map(&:capitalize).join.constantize
+        context_class = context_names.map(&:capitalize).join.constantize
+        context_class.new(data)
       end
     end
   end
