@@ -25,11 +25,20 @@ module Narrative
       end
 
       def relationship!(actor, actors)
-        klass = class << actor; self end
+        klass = eigen_class(actor)
         actors.slice(*@partners).each do |role_name, partner|
           klass.instance_eval do
             define_method(role_name) { partner }
           end
+        end
+      end
+
+      def eigen_class(object)
+        # FIXME: Mongoid WA
+        if object.respond_to? :target
+          class << object.target; self end
+        else
+          class << object; self end
         end
       end
     end
