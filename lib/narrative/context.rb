@@ -6,7 +6,7 @@ module Narrative
     extend ActiveSupport::Concern
 
     included do
-      cattr_reader(:roles) { [] }
+      private(*cattr_accessor(:roles) { [] })
     end
 
     module ClassMethods
