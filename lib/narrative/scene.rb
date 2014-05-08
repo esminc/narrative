@@ -2,7 +2,7 @@ require 'active_support'
 require_relative 'role_definition'
 
 module Narrative
-  module Context
+  module Scene
     extend ActiveSupport::Concern
 
     included do
@@ -14,6 +14,13 @@ module Narrative
         roles << RoleDefinition.new(name, partners, &block)
         define_method(name.to_sym) { @actors[name] }
       end
+
+      def principal(name, partners: [], &block)
+        raise 'principal is defined twice' if method_defined?(:principal)
+
+        role name, partners: partners, &block
+        alias_method :principal, name
+      end
     end
 
     def initialize(data)
@@ -23,12 +30,13 @@ module Narrative
     end
 
     def perform(&block)
-      block.call @actors.slice(*block.parameters.map(&:last))
+      block.call principal
     end
 
     private
 
     def validate!(data)
+      raise 'principal definition is required' unless self.class.method_defined?(:principal)
       raise 'data and role definition did not same' if data.keys.to_set != roles.map(&:name).to_set
       raise 'data did not allow to contain nil' if data.values.include?(nil)
     end

@@ -1,5 +1,4 @@
-require 'narrative/context'
-require 'narrative/context/teller'
+require 'narrative/scene'
 
 module Narrative
 end
