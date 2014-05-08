@@ -5,7 +5,7 @@ describe Narrative::Context::Teller do
     class RefactorContext
       include Narrative::Context
 
-      role :programmer do
+      principal :programmer do
         def refactor!(code)
           code.thrown_away!
         end
@@ -22,7 +22,7 @@ describe Narrative::Context::Teller do
       end
 
       def consume
-        with_context 'refactor', programmer: 'alice' do |programmer:|
+        with_context 'refactor', programmer: 'alice' do |programmer|
           programmer.refactor! code
         end
       end

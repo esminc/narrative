@@ -1,17 +1,23 @@
 require 'spec_helper'
 
 describe Narrative::Context do
-  describe '.role' do
-    class ProjectContext
-      include Narrative::Context
+  class ProjectContext
+    include Narrative::Context
 
-      role :programmer do; end
+    principal :programmer do
+      def coding; end
     end
 
+    role :tester do
+      def report_bug; end
+    end
+  end
+
+  describe '.role' do
     class AnotherProjectContext
       include Narrative::Context
 
-      role :product_owner do; end
+      principal :product_owner do; end
     end
 
     subject { ProjectContext.roles.map(&:name) }
@@ -21,18 +27,6 @@ describe Narrative::Context do
   end
 
   describe 'cast roles to data' do
-    class ProjectContext
-      include Narrative::Context
-
-      role :programmer do
-        def coding; end
-      end
-
-      role :tester do
-        def report_bug; end
-      end
-    end
-
     let(:data) { {programmer: 'alice', tester: 'bob' } }
 
     subject { ProjectContext.new(data) }
@@ -70,7 +64,7 @@ describe Narrative::Context do
         def add_unit_test_for(code); end
       end
 
-      role :tester, partners: [:programmer] do
+      principal :tester, partners: [:programmer] do
         def report_bug(code)
           programmer.correct!(code)
         end
@@ -81,7 +75,7 @@ describe Narrative::Context do
       code = double('defected code')
       allow(code).to receive(:modified!)
 
-      BugfixContext.new(programmer: 'alice', tester: 'bob').perform do |programmer:, tester:|
+      BugfixContext.new(programmer: 'alice', tester: 'bob').perform do |tester|
         tester.report_bug(code)
       end
 
@@ -90,25 +84,13 @@ describe Narrative::Context do
   end
 
   describe '#perform' do
-    class ProjectContext
-      include Narrative::Context
-
-      role :programmer do
-        def coding; end
-      end
-
-      role :tester do
-        def report_bug; end
-      end
-    end
-
     specify do
       called = false
-      context = ProjectContext.new({programmer: 'alice', tester: 'bob'})
+      alice = 'alice'
+      context = ProjectContext.new({programmer: alice, tester: 'bob'})
 
-      context.perform do |programmer:, tester:|
-        expect(programmer).to eq(context.programmer)
-        expect(tester).to eq(context.tester)
+      context.perform do |programmer|
+        expect(programmer).to be(alice)
 
         called = true
       end
