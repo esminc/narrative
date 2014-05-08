@@ -10,25 +10,19 @@ module Narrative
       end
 
       def cast!(actors)
-        actor = actor!(actors)
-        relationship!(actor, actors)
+        role = Module.new(&@responsibilities)
+        acquaint! role, actors.slice(*@partners)
 
-        actor
+        actors[@name].extend(role)
       end
 
       private
 
-      def actor!(actors)
-        actor = actors[@name]
-        actor.instance_eval(&@responsibilities)
-        actor
-      end
-
-      def relationship!(actor, actors)
-        klass = class << actor; self end
-        actors.slice(*@partners).each do |role_name, partner|
-          klass.instance_eval do
+      def acquaint!(role_module, partners)
+        role_module.instance_eval do
+          partners.each do |role_name, partner|
             define_method(role_name) { partner }
+            private role_name
           end
         end
       end
