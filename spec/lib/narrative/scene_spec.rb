@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe Narrative::Context do
+describe Narrative::Scene do
   class ProjectContext
-    include Narrative::Context
+    include Narrative::Scene
 
     principal :programmer do
       def coding; end
@@ -15,7 +15,7 @@ describe Narrative::Context do
 
   describe '.role' do
     class AnotherProjectContext
-      include Narrative::Context
+      include Narrative::Scene
 
       principal :product_owner do; end
     end
@@ -51,7 +51,7 @@ describe Narrative::Context do
 
   describe 'can refer to other roles' do
     class BugfixContext
-      include Narrative::Context
+      include Narrative::Scene
 
       role :programmer do
         def correct!(code)

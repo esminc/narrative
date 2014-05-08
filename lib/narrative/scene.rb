@@ -2,7 +2,7 @@ require 'active_support'
 require_relative 'role_definition'
 
 module Narrative
-  module Context
+  module Scene
     extend ActiveSupport::Concern
 
     included do
