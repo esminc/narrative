@@ -61,8 +61,13 @@ describe Narrative::Context do
 
       role :programmer do
         def correct!(code)
+          add_unit_test_for code
           code.modified!
         end
+
+        private
+
+        def add_unit_test_for(code); end
       end
 
       role :tester, partners: [:programmer] do
